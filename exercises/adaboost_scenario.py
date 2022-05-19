@@ -99,7 +99,7 @@ def fit_and_evaluate_adaboost(noise, n_learners=250, train_size=5000, test_size=
                        rows=1 + (i // 2), cols=1 + (i % 2))
 
     fig.update_layout(
-        title=rf"$\textbf{{Decision Boundaries By Different Numbers of Learners}}$",
+        title=rf"$\textbf{{Decision Boundaries By Different Numbers of Learners. Noise: {noise}}}$",
         margin=dict(t=100)) \
         .update_xaxes(visible=False).update_yaxes(visible=False).show()
 
@@ -121,7 +121,7 @@ def fit_and_evaluate_adaboost(noise, n_learners=250, train_size=5000, test_size=
                                          line=dict(color="black", width=1))))
 
     fig.update_layout(title=dict(
-        text=f'best classifier. number of classifiers: {best_n_learners}. accuracy:{acc}'))
+        text=f'Best Classifier. Number of Classifiers: {best_n_learners}. accuracy:{acc}, Noise: {noise}'))
     fig.show()
 
 
