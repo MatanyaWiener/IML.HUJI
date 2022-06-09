@@ -38,6 +38,11 @@ def cross_validate(estimator: BaseEstimator, X: np.ndarray, y: np.ndarray,
         Average validation score over folds
     """
 
+    # Shuffle
+    new_idx = np.random.permutation(y.shape[0])
+    X = X[new_idx]
+    y = y[new_idx]
+
     # Splitting and declaring arrays to receive the scoring
     X_split = np.array_split(X, cv)
     y_split = np.array_split(y, cv)

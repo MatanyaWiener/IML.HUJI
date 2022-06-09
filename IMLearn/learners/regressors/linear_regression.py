@@ -3,8 +3,8 @@ from typing import NoReturn
 from ...base import BaseEstimator
 import numpy as np
 from numpy.linalg import pinv
-from IMLearn.metrics import mean_square_error
 
+# This is the formal Solution
 class LinearRegression(BaseEstimator):
     """
     Linear Regression Estimator
@@ -49,11 +49,10 @@ class LinearRegression(BaseEstimator):
         -----
         Fits model with or without an intercept depending on value of `self.include_intercept_`
         """
-        # So apparently numpy.linalg.pinv makes me that X dagger, which is the pseudoinverse. 
-        if self.include_intercept_:
-            X = np.c_[ np.ones(X.shape[0]), X ]
-        self.coefs_ = pinv(X) @ y.reshape((-1, 1))
         self.fitted_ = True
+        if self.include_intercept_:
+            X = np.c_[np.ones(len(X)), X]
+        self.coefs_ = pinv(X) @ y
 
     def _predict(self, X: np.ndarray) -> np.ndarray:
         """
@@ -70,9 +69,9 @@ class LinearRegression(BaseEstimator):
             Predicted responses of given samples
         """
         if self.include_intercept_:
-             X = np.c_[ np.ones(X.shape[0]), X ]
-        return X @ self.coefs_ 
-        
+            X = np.c_[np.ones(len(X)), X]
+        return X @ self.coefs_
+
     def _loss(self, X: np.ndarray, y: np.ndarray) -> float:
         """
         Evaluate performance under MSE loss function
@@ -90,7 +89,5 @@ class LinearRegression(BaseEstimator):
         loss : float
             Performance under MSE loss function
         """
-        
-        y_pred = self._predict(X)
-        return mean_square_error(y.flatten(), y_pred.flatten())
-        
+        from ...metrics import mean_square_error
+        return mean_square_error(y, self._predict(X))
